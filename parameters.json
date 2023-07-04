@@ -1,0 +1,15 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "virtualMachines_pr0707_VM1_eastUS_name": {
+            "value": null
+        },
+        "disks_pr0707_VM1_eastUS_disk1_2e3b26ed458d4b689562a04aee89772e_externalid": {
+            "value": null
+        },
+        "networkInterfaces_pr0707_vm1_eastus435_externalid": {
+            "value": null
+        }
+    }
+}

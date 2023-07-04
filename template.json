@@ -1,0 +1,97 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "virtualMachines_pr0707_VM1_eastUS_name": {
+            "defaultValue": "pr0707-VM1-eastUS",
+            "type": "String"
+        },
+        "disks_pr0707_VM1_eastUS_disk1_2e3b26ed458d4b689562a04aee89772e_externalid": {
+            "defaultValue": "/subscriptions/b2197690-dd8f-43d3-9b53-25e72dd7c511/resourceGroups/RG-NW-PR-EMEA/providers/Microsoft.Compute/disks/pr0707-VM1-eastUS_disk1_2e3b26ed458d4b689562a04aee89772e",
+            "type": "String"
+        },
+        "networkInterfaces_pr0707_vm1_eastus435_externalid": {
+            "defaultValue": "/subscriptions/b2197690-dd8f-43d3-9b53-25e72dd7c511/resourceGroups/RG-NW-PR-EMEA/providers/Microsoft.Network/networkInterfaces/pr0707-vm1-eastus435",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Compute/virtualMachines",
+            "apiVersion": "2023-03-01",
+            "name": "[parameters('virtualMachines_pr0707_VM1_eastUS_name')]",
+            "location": "eastus",
+            "tags": {
+                "ApplicationId": "MJIL-Sandbox"
+            },
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "Standard_D2s_v3"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "MicrosoftWindowsServer",
+                        "offer": "WindowsServer",
+                        "sku": "2019-datacenter-gensecond",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "osType": "Windows",
+                        "name": "[concat(parameters('virtualMachines_pr0707_VM1_eastUS_name'), '_disk1_2e3b26ed458d4b689562a04aee89772e')]",
+                        "createOption": "FromImage",
+                        "caching": "ReadWrite",
+                        "managedDisk": {
+                            "storageAccountType": "Premium_LRS",
+                            "id": "[parameters('disks_pr0707_VM1_eastUS_disk1_2e3b26ed458d4b689562a04aee89772e_externalid')]"
+                        },
+                        "deleteOption": "Delete",
+                        "diskSizeGB": 127
+                    },
+                    "dataDisks": [],
+                    "diskControllerType": "SCSI"
+                },
+                "osProfile": {
+                    "computerName": "pr0707-VM1-east",
+                    "adminUsername": "pr",
+                    "windowsConfiguration": {
+                        "provisionVMAgent": true,
+                        "enableAutomaticUpdates": true,
+                        "patchSettings": {
+                            "patchMode": "AutomaticByOS",
+                            "assessmentMode": "ImageDefault",
+                            "enableHotpatching": false
+                        },
+                        "enableVMAgentPlatformUpdates": false
+                    },
+                    "secrets": [],
+                    "allowExtensionOperations": true,
+                    "requireGuestProvisionSignal": true
+                },
+                "securityProfile": {
+                    "uefiSettings": {
+                        "secureBootEnabled": true,
+                        "vTpmEnabled": true
+                    },
+                    "securityType": "TrustedLaunch"
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[parameters('networkInterfaces_pr0707_vm1_eastus435_externalid')]",
+                            "properties": {
+                                "deleteOption": "Delete"
+                            }
+                        }
+                    ]
+                },
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": true
+                    }
+                },
+                "licenseType": "Windows_Server"
+            }
+        }
+    ]
+}
